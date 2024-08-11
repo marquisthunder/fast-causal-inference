@@ -23,7 +23,6 @@ namespace
 AggregateFunctionPtr createAggregateFunctionDistributedNodeRowNumber(
     const std::string & name, const DataTypes & argument_types, const Array & parameters, const Settings *)
 {
-    assertArityAtMost<1>(name, argument_types);
     AggregateFunctionPtr res;
     res = std::make_shared<AggregateFunctionDistributedNodeRowNumber>(argument_types, parameters);
 

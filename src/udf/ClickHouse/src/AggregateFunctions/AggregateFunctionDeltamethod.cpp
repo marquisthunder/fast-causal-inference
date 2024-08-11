@@ -258,6 +258,8 @@ AggregateFunctionPtr createAggregateFunctionXexptTtest2Samp(
 }
 }
 
+
+
 void registerAggregateFunctionDeltaMethod(AggregateFunctionFactory & factory)
 {
     factory.registerFunction("Deltamethod", createAggregateFunctionDeltaMethod);

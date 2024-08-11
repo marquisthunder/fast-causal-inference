@@ -11,8 +11,8 @@ if [ ! -f "$base_path/contrib/ClickHouse/LICENSE" ];then
 fi
 cp -f $base_path/src/udf/ClickHouse/src/AggregateFunctions/* $base_path/contrib/ClickHouse/src/AggregateFunctions/
 cd $base_path/contrib/ClickHouse/; mkdir -p build
-export CC=clang-16
-export CXX=clang++-16
+export CC=clang-18
+export CXX=clang++-18
 cmake -S . -B build
 cd build; ninja clickhouse
 rm -f clickhouse

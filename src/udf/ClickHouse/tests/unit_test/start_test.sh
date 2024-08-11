@@ -1,4 +1,4 @@
-client=~/mmdcch_v52834/mmdcch/build/programs/clickhouse-client
+client='/home/weiyan/Projects/fast-causal-inference/contrib/ClickHouse/build/programs/clickhouse client'
 
 $client -nm < unit_test_tbl.sql
 # input test data

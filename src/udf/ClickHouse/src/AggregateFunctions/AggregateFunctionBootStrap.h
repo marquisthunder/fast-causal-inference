@@ -11,8 +11,10 @@
 #include <Columns/ColumnString.h>
 #include <Columns/ColumnArray.h>
 #include <Common/Exception.h>
+#include <Common/Arena.h>
 #include <Common/PODArray_fwd.h>
 #include <Core/ColumnsWithTypeAndName.h>
+#include <Core/ColumnNumbers.h>
 #include <DataTypes/IDataType.h>
 #include <IO/VarInt.h>
 #include <base/types.h>
@@ -272,7 +274,7 @@ public:
 
         if constexpr (std::is_same_v<T, String>)
         {
-            const ColumnString * col_str = checkAndGetColumn<ColumnString>(nested_to);
+            const ColumnString * col_str = & checkAndGetColumn<ColumnString>(nested_to);
             if (!col_str) 
                 throw Exception(ErrorCodes::ILLEGAL_COLUMN, "Cast to ColumnString fail");
 
@@ -513,7 +515,7 @@ public:
         getAggregateFunctionNameAndParametersArray(aggregate_function_name_with_params,
                                                    aggregate_function_name, params_row, "function " + getName(), nullptr);
         AggregateFunctionProperties properties;
-        auto res = AggregateFunctionFactory::instance().get(aggregate_function_name, arguments,
+        auto res = AggregateFunctionFactory::instance().get(getName(), NullsAction::IGNORE_NULLS, arguments,
                                                                       params_row, properties);
         if (!res)
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "The aggregate function is invalid");

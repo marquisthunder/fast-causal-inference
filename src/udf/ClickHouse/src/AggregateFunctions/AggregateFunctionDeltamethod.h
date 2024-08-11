@@ -19,7 +19,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/math/distributions/students_t.hpp>
 #include <pqxx/params.hxx>
-#include <regex>
+#include <Common/re2.h>
 
 
 namespace DB
@@ -54,12 +54,12 @@ public:
 
     inline static bool isIdentifier(const std::string & s)
     {
-        return std::regex_match(s, std::regex("x[0-9]+"));
+	return RE2::FullMatch(s, "x[0-9]+");
     }
 
     inline static bool isNumbers(const std::string & s)
     {
-        return std::regex_match(s, std::regex("[0-9]+[.]?[0-9]*"));
+	return RE2::FullMatch(s, "[0-9]+[.]?[0-9]*");
     }
 
     inline static std::vector<size_t> getIndex(const std::string& g)
@@ -959,21 +959,21 @@ public:
 
 
         String title = to_string_with_precision("groupname")
-                     + to_string_with_precision<12>("numerator")
-                     + to_string_with_precision<13>("denominator");
+                     + to_string_with_precision("numerator")
+                     + to_string_with_precision("denominator");
         String group0 = "  " + to_string_with_precision(index2group.begin()->first)
-                      + to_string_with_precision<12>(static_cast<UInt64>(floor(numerators[0] + 0.5)))
-                      + to_string_with_precision<13>(static_cast<UInt64>(floor(denominators[0] + 0.5)));
+                      + to_string_with_precision(static_cast<UInt64>(floor(numerators[0] + 0.5)))
+                      + to_string_with_precision(static_cast<UInt64>(floor(denominators[0] + 0.5)));
         String group1 = "  " + to_string_with_precision(next(index2group.begin())->first)
-                      + to_string_with_precision<12>(static_cast<UInt64>(floor(numerators[1] + 0.5)))
-                      + to_string_with_precision<13>(static_cast<UInt64>(floor(denominators[1] + 0.5)));
+                      + to_string_with_precision(static_cast<UInt64>(floor(numerators[1] + 0.5)))
+                      + to_string_with_precision(static_cast<UInt64>(floor(denominators[1] + 0.5)));
         if (!denominators_pre.empty())
         {
-            title += to_string_with_precision<15>("numerator_pre") + to_string_with_precision<16>("denominator_pre");
-            group0 += to_string_with_precision<15>(static_cast<UInt64>(floor(numerators_pre[0] + 0.5)))
-                   + to_string_with_precision<16>(static_cast<UInt64>(floor(denominators[0] + 0.5)));
-            group1 += to_string_with_precision<15>(static_cast<UInt64>(floor(numerators_pre[1] + 0.5)))
-                   + to_string_with_precision<16>(static_cast<UInt64>(floor(denominators[1] + 0.5)));
+            title += to_string_with_precision("numerator_pre") + to_string_with_precision("denominator_pre");
+            group0 += to_string_with_precision(static_cast<UInt64>(floor(numerators_pre[0] + 0.5)))
+                   + to_string_with_precision(static_cast<UInt64>(floor(denominators[0] + 0.5)));
+            group1 += to_string_with_precision(static_cast<UInt64>(floor(numerators_pre[1] + 0.5)))
+                   + to_string_with_precision(static_cast<UInt64>(floor(denominators[1] + 0.5)));
         }
 
 
@@ -988,20 +988,20 @@ public:
             ci_prefix.pop_back();
 
         String res = title + '\n' + group0 + '\n' + group1 + '\n' + '\n';
-        res += "  " + to_string_with_precision<16>("diff_relative") + to_string_with_precision<27>(ci_prefix + "%_relative_CI")
+        res += "  diff_relative" + to_string_with_precision(ci_prefix + "%_relative_CI")
             + to_string_with_precision("p-value")
-            + to_string_with_precision<13>("t-statistic") + to_string_with_precision("diff")
-            + to_string_with_precision<25>(ci_prefix + "%_CI")
-            + to_string_with_precision("power") + to_string_with_precision<18>("recommend_samplesize") + '\n';
+            + to_string_with_precision("t-statistic") + to_string_with_precision("diff")
+            + to_string_with_precision(ci_prefix + "%_CI")
+            + to_string_with_precision("power") + to_string_with_precision("recommend_samplesize") + '\n';
 
-        res += "  " + to_string_with_precision<16>(std::to_string(diff_relative * 100) + "%")
-            + to_string_with_precision<14>("[" + std::to_string(lower_relative * 100) + "%,")
-            + to_string_with_precision<13>(std::to_string(upper_relative * 100) + "%]")
-            + to_string_with_precision(p_value) + to_string_with_precision<13>(t_stat)
+        res += "  " + to_string_with_precision(std::to_string(diff_relative * 100) + "%")
+            + to_string_with_precision("[" + std::to_string(lower_relative * 100) + "%,")
+            + to_string_with_precision(std::to_string(upper_relative * 100) + "%]")
+            + to_string_with_precision(p_value) + to_string_with_precision(t_stat)
             + to_string_with_precision(estimate) 
-            + to_string_with_precision<13>("[" + std::to_string(lower) + ",") + to_string_with_precision<12>(std::to_string(upper) + "]")
+            + to_string_with_precision("[" + std::to_string(lower) + ",") + to_string_with_precision(std::to_string(upper) + "]")
             + to_string_with_precision(power)
-            + to_string_with_precision<18>(static_cast<UInt64>(recommend_samplesize)) + '\n';
+            + to_string_with_precision(static_cast<UInt64>(recommend_samplesize)) + '\n';
 
         return res;
     }

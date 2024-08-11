@@ -276,16 +276,16 @@ struct AggregateFunctionOls
         result.pop_back();
         result += ")\n\n";
         result += "  Coefficients:\n";
-        result += "  " +  to_string_with_precision<16>(".") + to_string_with_precision("Estimate") 
+        result += "  .\t" + to_string_with_precision("Estimate") 
                + to_string_with_precision("Std. Error") + to_string_with_precision("t value") 
                + to_string_with_precision("Pr(>|t|)") + "\n";
         if (params.use_bias)
-            result += "  " + to_string_with_precision<16>("(Intercept)") + to_string_with_precision(params.coef.back())
+            result += "   (Intercept)" + to_string_with_precision(params.coef.back())
               + to_string_with_precision(params.std.back()) + to_string_with_precision(params.t_value.back()) 
               + to_string_with_precision(params.p_value.back()) + "\n";
         for (size_t i = 0; i < params.arg_num - 1; ++i)
         {
-            result += "  " + to_string_with_precision<16>("x" + std::to_string(i + 1)) 
+            result += "  x" + to_string_with_precision(std::to_string(i + 1)) 
                    + to_string_with_precision(params.coef[i]) + to_string_with_precision(params.std[i]) 
                    + to_string_with_precision(params.t_value[i]) + to_string_with_precision(params.p_value[i]) + "\n";
         }

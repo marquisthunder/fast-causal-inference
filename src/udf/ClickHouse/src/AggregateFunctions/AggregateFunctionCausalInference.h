@@ -77,7 +77,7 @@ bool invertMatrix (const ublas::matrix<T>& input, ublas::matrix<T>& inverse)
     } 
     catch (...) 
     {
-        throw Exception("InvertMatrix failed. some variables in the table are perfectly collinear.", ErrorCodes::BAD_ARGUMENTS);
+        throw Exception(ErrorCodes::BAD_ARGUMENTS, "InvertMatrix failed. some variables in the table are perfectly collinear.");
     }
 }
 
@@ -286,7 +286,7 @@ public:
                     data[i][j].add(columns_left[i]->getFloat64(row_num)*sqrt(weight_left),
                                       columns_right[j]->getFloat64(row_num)*sqrt(weight_right));
                     if (weight_left < 0 || weight_right < 0)
-                        throw Exception("Weights must be non-negative", ErrorCodes::BAD_ARGUMENTS);
+			throw Exception(ErrorCodes::BAD_ARGUMENTS,"Weights must be non-negative");
                 }
                 else 
                     data[i][j].add(columns_left[i]->getFloat64(row_num), columns_right[j]->getFloat64(row_num));
@@ -335,7 +335,7 @@ public:
     void merge(const ColMatrix & source)
     {
         if (data.size() != source.data.size() || (data.size() && data[0].size() != source.data[0].size()))
-            throw Exception("Cannot merge matrices with different sizes", ErrorCodes::BAD_ARGUMENTS);
+            throw Exception( ErrorCodes::BAD_ARGUMENTS, "Cannot merge matrices with different sizes");
 
         for (size_t i = 0; i < data.size(); ++i)
             for (size_t j = single_col ? i : 0; j < data[0].size(); ++j)
@@ -379,7 +379,7 @@ public:
     {
         Matrix matrix(index.size(), index.size());
         if (*std::max_element(index.begin(), index.end()) >= data.size())
-            throw Exception("Index is out of bounds", ErrorCodes::BAD_ARGUMENTS);
+            throw Exception( ErrorCodes::BAD_ARGUMENTS, "Index is out of bounds");
 
         for (size_t i = 0; i < index.size(); ++i)
             for (size_t j = 0; j < index.size(); ++j)
@@ -407,7 +407,7 @@ public:
     {
         std::vector<Float64> means(index.size());
         if (*std::max_element(index.begin(), index.end()) >= data.size())
-            throw Exception("Index is out of bounds", ErrorCodes::BAD_ARGUMENTS);
+            throw Exception(ErrorCodes::BAD_ARGUMENTS, "Index is out of bounds");
         for (size_t j = 0; j < index.size(); ++j)
             means[j] = data[0][index[j]].getYMean();
         return means;
@@ -447,12 +447,12 @@ public:
 
     virtual UInt32 operator()(const Int32 &) const
     {
-        throw Exception("Hash function for 32bit not implemented.", ErrorCodes::NOT_IMPLEMENTED);
+        throw Exception(ErrorCodes::NOT_IMPLEMENTED, "Hash function for 32bit not implemented." );
     }
 
     virtual UInt32 operator()(const Int64 &) const
     {
-        throw Exception("Hash function for 64bit not implemented.", ErrorCodes::NOT_IMPLEMENTED);
+        throw Exception(ErrorCodes::NOT_IMPLEMENTED, "Hash function for 64bit not implemented.");
     }
 
 private:
@@ -474,7 +474,7 @@ public:
     {
         size_t len = sizeof(key);
         const uint8_t *data = reinterpret_cast<const uint8_t *>(&key);
-        const int nblocks = len / 4;
+        const int nblocks = static_cast<int>(len / 4);
         int i;
         uint32_t h1 = seed;
         uint32_t c1 = 0xcc9e2d51;

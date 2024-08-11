@@ -19,6 +19,7 @@ namespace DB
 {
 
 struct Settings;
+
 namespace ErrorCodes
 {
     extern const int BAD_ARGUMENTS;
@@ -38,7 +39,7 @@ struct SRMData
         }
         else
             group2sum[column[1]->getInt(row_num)] += column[0]->getFloat64(row_num);
-        const ColumnArray * column_arr = checkAndGetColumn<ColumnArray>(*(column[2]));
+        const ColumnArray * column_arr = & checkAndGetColumn<ColumnArray>(*(column[2]));
         if (!column_arr)
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "Illegal column {} of argument of aggregate function SRM",
                             column[2]->getName());
@@ -153,6 +154,8 @@ struct SRMData
 };
 
 template <typename Key>
+
+
 class AggregateFunctionSRM final:
     public IAggregateFunctionDataHelper<SRMData<Key>, AggregateFunctionSRM<Key>>
 {
