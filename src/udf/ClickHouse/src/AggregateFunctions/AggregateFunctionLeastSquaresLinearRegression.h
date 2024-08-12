@@ -276,16 +276,16 @@ struct AggregateFunctionOls
         result.pop_back();
         result += ")\n\n";
         result += "  Coefficients:\n";
-        result += "  .\t" + to_string_with_precision("Estimate") 
+        result += "  " +  to_string_with_precision(".") + to_string_with_precision("Estimate")
                + to_string_with_precision("Std. Error") + to_string_with_precision("t value") 
                + to_string_with_precision("Pr(>|t|)") + "\n";
         if (params.use_bias)
-            result += "   (Intercept)" + to_string_with_precision(params.coef.back())
+            result += "  " + to_string_with_precision("(Intercept)") + to_string_with_precision(params.coef.back())
               + to_string_with_precision(params.std.back()) + to_string_with_precision(params.t_value.back()) 
               + to_string_with_precision(params.p_value.back()) + "\n";
         for (size_t i = 0; i < params.arg_num - 1; ++i)
         {
-            result += "  x" + to_string_with_precision(std::to_string(i + 1)) 
+            result += "  " + to_string_with_precision("x" + std::to_string(i + 1)) 
                    + to_string_with_precision(params.coef[i]) + to_string_with_precision(params.std[i]) 
                    + to_string_with_precision(params.t_value[i]) + to_string_with_precision(params.p_value[i]) + "\n";
         }
@@ -321,7 +321,7 @@ struct AggregateFunctionOls
                             toString(rows_num), toString(offset), toString(limit));
 
         const auto & coef = params.getParams().coef;
-        if (offset > rows_num || offset + limit > rows_num)
+      if (offset > rows_num || offset + limit > rows_num)
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "Invalid offset and limit for predict. "
                             "Block has {} rows, but offset is {}  and limit is {}",
                             toString(rows_num), toString(offset), toString(limit));

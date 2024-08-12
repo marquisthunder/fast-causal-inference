@@ -244,6 +244,28 @@ private:
     std::vector<Float64> average_squared_gradient;
 };
 
+class Lasso : public IWeightsUpdater
+{
+public:
+    explicit Lasso(Float64 alpha_) : alpha(alpha_) {}
+
+    void addToBatch(
+            std::vector<Float64> & batch_gradient,
+            IGradientComputer & gradient_computer,
+            const std::vector<Float64> & weights,
+            Float64 bias,
+            Float64 l2_reg_coef,
+            Float64 target,
+            const IColumn ** columns,
+            size_t row_num) override;
+
+    void update(UInt64 batch_size, std::vector<Float64> & weights, Float64 & bias, Float64 learning_rate,
+                const std::vector<Float64> & batch_gradient) override;
+
+private:
+    const Float64 alpha = 0.0001;
+};
+
 
 /** LinearModelData is a class which manages current state of learning
   */
@@ -350,6 +372,8 @@ public:
             new_weights_updater = std::make_shared<Nesterov>(param_num);
         else if (weights_updater_name == "Adam")
             new_weights_updater = std::make_shared<Adam>(param_num);
+        else if (weights_updater_name == "Lasso")
+            new_weights_updater = std::make_shared<Lasso>(l2_reg_coef);
         else
             throw Exception(ErrorCodes::LOGICAL_ERROR, "Illegal name of weights updater (should have been checked earlier)");
 

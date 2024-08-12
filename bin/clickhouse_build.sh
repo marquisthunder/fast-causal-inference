@@ -16,7 +16,7 @@ export CXX=clang++-18
 cmake -S . -B build
 cd build; ninja clickhouse
 rm -f clickhouse
-mv ./programs/clickhouse $base_path/clickhouse
+# mv ./programs/clickhouse $base_path/clickhouse
 cd ${history_path}
 echo "build success"
 # select * from system.functions where is_aggregate=1;

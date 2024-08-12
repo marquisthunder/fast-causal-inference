@@ -988,7 +988,7 @@ public:
             ci_prefix.pop_back();
 
         String res = title + '\n' + group0 + '\n' + group1 + '\n' + '\n';
-        res += "  diff_relative" + to_string_with_precision(ci_prefix + "%_relative_CI")
+        res += "  " + to_string_with_precision("diff_relative") + to_string_with_precision(ci_prefix + "%_relative_CI")
             + to_string_with_precision("p-value")
             + to_string_with_precision("t-statistic") + to_string_with_precision("diff")
             + to_string_with_precision(ci_prefix + "%_CI")

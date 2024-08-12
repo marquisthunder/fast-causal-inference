@@ -515,7 +515,7 @@ public:
         getAggregateFunctionNameAndParametersArray(aggregate_function_name_with_params,
                                                    aggregate_function_name, params_row, "function " + getName(), nullptr);
         AggregateFunctionProperties properties;
-        auto res = AggregateFunctionFactory::instance().get(getName(), NullsAction::IGNORE_NULLS, arguments,
+        auto res = AggregateFunctionFactory::instance().get(getName(), NullsAction::EMPY, arguments,
                                                                       params_row, properties);
         if (!res)
             throw Exception(ErrorCodes::BAD_ARGUMENTS, "The aggregate function is invalid");
