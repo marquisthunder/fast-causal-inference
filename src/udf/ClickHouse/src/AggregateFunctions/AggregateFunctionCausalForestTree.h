@@ -24,7 +24,6 @@
 #include <boost/math/distributions/students_t.hpp>
 #include <pqxx/params.hxx>
 #include <Common/PODArray_fwd.h>
-#include <regex>
 
 namespace DB
 {

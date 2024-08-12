@@ -22,7 +22,6 @@
 #include <IO/ReadBufferFromString.h>
 #include <pqxx/params.hxx>
 #include <Common/Exception.h>
-#include <regex>
 
 namespace DB
 {

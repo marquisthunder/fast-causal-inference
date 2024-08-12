@@ -23,7 +23,6 @@
 #include <pqxx/params.hxx>
 #include <Common/PODArray_fwd.h>
 #include <Core/ColumnsWithTypeAndName.h>
-#include <regex>
 
 namespace DB
 {

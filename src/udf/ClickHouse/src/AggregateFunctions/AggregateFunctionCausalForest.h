@@ -20,7 +20,6 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/math/distributions/students_t.hpp>
 #include <pqxx/params.hxx>
-#include <regex>
 #include <AggregateFunctions/AggregateFunctionCausalForestTrainer.h>
 #include <IO/VarInt.h>
 #include <IO/WriteBuffer.h>
